@@ -6,7 +6,7 @@
 .header{
     min-height: 100vh;
     width: 100%;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/pexels-miriam-espacio-365633.jpg);
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(images/pexels-miriam-espacio-365633.jpg);
     background-position: center;
     background-size: cover;
     position: relative;
@@ -89,7 +89,7 @@ nav img{
     opacity: 0.35; /* Adjust the transparency */
     width: 600px; /* Adjust the size */
     height: 500px; /* Adjust the size */
-    background-image: url(Images/astrologo.png); /* Path to your image */
+    background-image: url(images/astrologo.png); /* Path to your image */
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 0; /* Ensure it's above other content */
