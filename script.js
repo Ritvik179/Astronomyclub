@@ -34,4 +34,55 @@ document.getElementById('upload-form').addEventListener('submit', function(event
 
         reader.readAsDataURL(file);
     }
+
 });
+
+// Fetch and display news from NASA's RSS feed
+const newsContainer = document.getElementById('news');
+
+async function fetchNews() {
+    const nasaRSSUrl = 'https://www.nasa.gov/rss/dyn/breaking_news.rss'; // NASA Breaking News RSS feed
+    try {
+        const response = await fetch(nasaRSSUrl);
+        const rssText = await response.text();
+        const parser = new DOMParser();
+        const rssDoc = parser.parseFromString(rssText, "application/xml");
+        displayNews(rssDoc);
+    } catch (error) {
+        console.error('Error fetching NASA news:', error);
+        newsContainer.innerHTML = '<p>Failed to load news. Please try again later.</p>';
+    }
+}
+
+function displayNews(rssDoc) {
+    const items = rssDoc.querySelectorAll('item');
+    let newsHTML = '';
+
+    items.forEach(item => {
+        const title = item.querySelector('title').textContent;
+        const link = item.querySelector('link').textContent;
+        const description = item.querySelector('description').textContent;
+        const pubDate = item.querySelector('pubDate').textContent;
+
+        newsHTML += `
+        <div class="news-item">
+            <h3><a href="${link}" target="_blank">${title}</a></h3>
+            <p>${description}</p>
+            <p><small>Published on: ${new Date(pubDate).toLocaleDateString()}</small></p>
+        </div>`;
+    });
+
+    newsContainer.innerHTML = newsHTML;
+}
+
+// Call fetchNews to load NASA RSS feed on page load
+fetchNews();
+   
+
+
+
+
+  
+
+
+
