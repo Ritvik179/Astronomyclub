@@ -5,6 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery | IISER-M Astroclub</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAdmin = false; 
+            if (!isAdmin) {
+                document.getElementById('admin-upload').style.display = 'none';
+            }
+        });
+        document.getElementById('upload-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById('image-upload');
+        const galleryTitle = document.getElementById('gallery-title').value;
+        
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const image = document.createElement('img');
+                image.src = event.target.result;
+                image.alt = galleryTitle;
+                
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('gallery-item');
+                imageContainer.appendChild(image);
+                
+                const title = document.createElement('p');
+                title.textContent = galleryTitle;
+                imageContainer.appendChild(title);
+                
+                document.getElementById('gallery-container').appendChild(imageContainer);
+            };
+            reader.readAsDataURL(file);
+            }
+        });
+
+    </script>
+    <style>
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .gallery-item p {
+            padding: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+    </style>
 </head>
 <body>
     <section class="header">
@@ -13,10 +76,11 @@
             <div class="nav-links">
                 <ul>
                     <li><a href="index.html">HOME</a></li>
-                    <li><a href="about.html">ABOUT</a></li>
                     <li><a href="gallery.html">GALLERY</a></li>
-                    <li><a href="blog.html">BLOG</a></li>
+                    <li><a href="starmap.html">STAR MAP</a></li>
+                    <li><a href="achievements.html">ACHIEVEMENTS</a></li>
                     <li><a href="news.html">NEWS</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
                 </ul>
             </div>
         </nav>
@@ -27,7 +91,6 @@
         </div>
     </section>
 
-    <!-- Admin-only section for uploading photos (only visible to admins) -->
     <section id="admin-upload" class="admin-only">
         <h2>Admin: Upload New Photos</h2>
         <form id="upload-form">
@@ -38,11 +101,9 @@
         </form>
     </section>
 
-    <!-- Photo gallery that all users can view -->
     <section class="gallery">
         <h2>Event Galleries</h2>
         <div class="gallery-container" id="gallery-container">
-            <!-- Images dynamically added here -->
         </div>
     </section>
 
