@@ -4,26 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astronomy Club News</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const rssUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.nasa.gov/rss/dyn/breaking_news.rss';
+
+        fetch(rssUrl)
+            .then(response => response.json())
+            .then(data => {
+                const newsCards = document.getElementById('news-cards');
+
+                if (data && data.items) {
+                    data.items.forEach(item => {
+                        const card = document.createElement('div');
+                        card.classList.add('news-card');
+
+                        const image = document.createElement('img');
+                        image.src = item.enclosure?.link || 'default-image.jpg'; 
+                        image.alt = item.title;
+
+                        const content = document.createElement('div');
+                        content.classList.add('news-card-content');
+
+                        const title = document.createElement('a');
+                        title.href = item.link;
+                        title.target = '_blank';
+                        title.classList.add('news-card-title');
+                        title.textContent = item.title;
+
+                        const description = document.createElement('p');
+                        description.classList.add('news-card-description');
+                        description.textContent = item.description.slice(0, 100) + '...';
+
+                        content.appendChild(title);
+                        content.appendChild(description);
+                        card.appendChild(image);
+                        card.appendChild(content);
+                        newsCards.appendChild(card);
+                    });
+                } else {
+                    newsCards.innerHTML = '<p>No news articles available at this time.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching NASA RSS feed:', error);
+            });
+
+    </script>
 </head>
 <body>
     <!-- Navigation Bar (if part of the theme) -->
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>
-    </nav>
+    <section class="header">
+        <nav>
+            <a href="index.html"><img src="images/logo.png"></a>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="gallery.html">GALLERY</a></li>
+                    <li><a href="starmap.html">STAR MAP</a></li>
+                    <li><a href="achievements.html">ACHIEVEMENTS</a></li>
+                    <li><a href="news.html">NEWS</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
+                </ul>
+            </div>
+        </nav>
+    </section>
 
     <!-- News Section with a background and theme -->
     <section class="news-section">
         <div class="container">
-            <h1 class="page-title">Latest Astronomy News</h1>
-            <div id="news" class="news-container">
-                <!-- News articles will be loaded here -->
-            </div>
+            <div id="news-gallery">
+                <h2>NASA News</h2>
+                <div id="news-cards"></div>
+            </div>            
         </div>
     </section>
 
